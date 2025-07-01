@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { vapi } from "@/lib/vapi";
 import { useUser } from "@clerk/nextjs";
-import Vapi from "@vapi-ai/web";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -23,7 +22,7 @@ const GenerateProgramPage = () => {
   // auto-scroll messages
   useEffect(() => {
     if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -31,7 +30,7 @@ const GenerateProgramPage = () => {
   useEffect(() => {
     if (callEnded) {
       const redirectTimer = setTimeout(() => {
-        router.push("/profile")
+        router.push("/profile");
       }, 1500);
       
       return () => clearTimeout(redirectTimer);
@@ -68,8 +67,8 @@ const GenerateProgramPage = () => {
 
     const handleMessage = (message: any) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
-        const newMessage = {content: message.transcript, role: message.role}
-        setMessages(prev => [...prev, newMessage])
+        const newMessage = {content: message.transcript, role: message.role};
+        setMessages(prev => [...prev, newMessage]);
       }
     };
 
@@ -84,7 +83,7 @@ const GenerateProgramPage = () => {
       .on("speech-start", handleSpeechStart)
       .on("speech-end", handleSpeechEnd)
       .on("message", handleMessage)
-      .on("error", handleError)
+      .on("error", handleError);
 
     // cleanup event listeners on unmount
     return () => {
@@ -93,12 +92,12 @@ const GenerateProgramPage = () => {
         .off("speech-start", handleSpeechStart)
         .off("speech-end", handleSpeechEnd)
         .off("message", handleMessage)
-        .off("error", handleError)
-    }
+        .off("error", handleError);
+    };
   }, []);
 
   const toggleCall = async () => {
-    if (callActive) vapi.stop()
+    if (callActive) vapi.stop();
     else {
       try {
         setConnecting(true);
@@ -111,16 +110,16 @@ const GenerateProgramPage = () => {
 
         await vapi.start(undefined, undefined, undefined, process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
           variableValues:{
-            full_name: fullName
-            // TODO: send user_id as well
-          }
-        })
+            full_name: fullName,
+            user_id: user?.id,
+          },
+        });
       } catch (error) {
         console.log("Failed to start call", error);
         setConnecting(false);
       }
     }
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen text-foreground overflow-hidden pb-6 pt-24">
@@ -195,7 +194,7 @@ const GenerateProgramPage = () => {
             <div className="aspect-video flex flex-col items-center justify-center p-6 relative">
               {/* USER IMAGE */}
               <div className="relative size-32 mb-4">
-                <img src={user?.imageUrl} alt="User" className="object-cover rounded-full" />
+                <img src={user?.imageUrl} alt="User" className="size-full object-cover rounded-full" />
               </div>
 
               <h2 className="text-xl font-bold text-foreground">You</h2>
@@ -264,7 +263,7 @@ const GenerateProgramPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default GenerateProgramPage;

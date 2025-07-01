@@ -6,10 +6,9 @@ export const syncUser = mutation({
         name: v.string(),
         email: v.string(),
         clerkId: v.string(),
-        image: v.optional(v.string())
+        image: v.optional(v.string()),
     },
     handler: async (ctx, args) => {
-
         const existingUser = await ctx.db
             .query("users")
             .filter((q) => q.eq(q.field("clerkId"), args.clerkId))

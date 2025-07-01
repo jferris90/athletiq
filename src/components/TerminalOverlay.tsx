@@ -31,7 +31,7 @@ const TerminalOverlay = () => {
             </div>
         </div>
     </div>
-  )
-}
+  );
+};
 
 export default TerminalOverlay
